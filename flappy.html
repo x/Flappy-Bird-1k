@@ -114,7 +114,8 @@
           d(b, l.x, l.h) < 5 ||
           d(b, l.x + 20, l.h) < 5 ||
           d(b, l.x, l.h + 40) < 5 ||
-          d(b, l.x + 20, l.h + 40) < 5) {
+					d(b, l.x + 20, l.h + 40) < 5 ||
+					b.y > 110) {
         clearInterval(g);
         alert('Game Over');
       }
