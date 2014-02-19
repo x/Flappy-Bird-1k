@@ -18,7 +18,7 @@
   WALL_DISTANCE = 30 meters
   SCROLL_RATE = 5 meters per second
   GRAVITY = 2.5 meters per second per second
-  FLAP_VELOCITY = -0.8 meters per second
+  FLAP_VELOCITY = -0.75 meters per second
   FLAP_TIME = 0.1 seconds
   WORLD_WIDTH = 80 meters
   WORLD_HEIGHT = 120 meters
@@ -77,10 +77,10 @@
     // increment bird velocity by GRAVITY / FRAMES_PER_SECOND
     b.v += .025;
     // if the time value was set, then bird has flapped, decrement t by
-    // FLAP_TIME / FPS and set bird velocity to flap_velocity
+    // FLAP_TIME / FPS and set bird velocity to FLAP_VELOCITY
     if (b.t > 0) {
       b.t -= 0.01;
-      b.v = -0.8;
+      b.v = -0.75;
     }
 
     // move the bird by it's velocity
