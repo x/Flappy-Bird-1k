@@ -2,138 +2,138 @@
 <script>
 
 
-	/*
-	UNITS
-	----
-	meters, an arbitrary non-resolution related measurment of distance
-	pixles, the actual unit of distance
-	seconds, normal seconds
-	frames, an actual new frame, actually used for measuring time
+  /*
+  UNITS
+  ----
+  meters, an arbitrary non-resolution related measurment of distance
+  pixles, the actual unit of distance
+  seconds, normal seconds
+  frames, an actual new frame, actually used for measuring time
 
-	CONSTANTS
-	--------
-	BIRD_X = 30 meters
-	BIRD_RADIUS = 5 meters
-	HOLE_HEIGHT = 40 meters
-	WALL_DISTANCE = 30 meters
-	SCROLL_RATE = 5 meters per second
-	GRAVITY = 2.5 meters per second per second
-	FLAP_VELOCITY = -0.8 meters per second
-	FLAP_TIME = 0.1 seconds
-	WORLD_WIDTH = 80 meters
-	WORLD_HEIGHT = 120 meters
-	SCREEN_WIDTH = 320 pixles
-	SCREEN_HEIGHT = 480 pixles
+  CONSTANTS
+  --------
+  BIRD_X = 30 meters
+  BIRD_RADIUS = 5 meters
+  HOLE_HEIGHT = 40 meters
+  WALL_DISTANCE = 30 meters
+  SCROLL_RATE = 5 meters per second
+  GRAVITY = 2.5 meters per second per second
+  FLAP_VELOCITY = -0.8 meters per second
+  FLAP_TIME = 0.1 seconds
+  WORLD_WIDTH = 80 meters
+  WORLD_HEIGHT = 120 meters
+  SCREEN_WIDTH = 320 pixles
+  SCREEN_HEIGHT = 480 pixles
 
-	UNIT CONVERSIONS
-	---------------
-	FRAMES_PER_SECOND = 100
-	PIXLES_PER_METER = 4
-	*/
+  UNIT CONVERSIONS
+  ---------------
+  FRAMES_PER_SECOND = 100
+  PIXLES_PER_METER = 4
+  */
 
-	// distance function to help compute distance in meters from center of bird
-	function d(b, x, y) {
-		// sqrt((BIRD_X + BIRD_RADIUS - x)^2 + (b.y + BIRD_RADIUS - y)^2)
-		return Math.sqrt(Math.pow(35 - x, 2) + Math.pow(b.y + 5 - y, 2));
-	}
+  // distance function to help compute distance in meters from center of bird
+  function d(b, x, y) {
+    // sqrt((BIRD_X + BIRD_RADIUS - x)^2 + (b.y + BIRD_RADIUS - y)^2)
+    return Math.sqrt(Math.pow(35 - x, 2) + Math.pow(b.y + 5 - y, 2));
+  }
 
-	var e = document.getElementById('e')
-		, c = e.getContext('2d')
+  var e = document.getElementById('e')
+    , c = e.getContext('2d')
 
-	// init bird with a y, velocity (meters per frame), and time value (seconds)
-		, b = {
-		y: 10,
-		v: 0,
-		t: 0,
-	}
+  // init bird with a y, velocity (meters per frame), and time value (seconds)
+    , b = {
+    y: 10,
+    v: 0,
+    t: 0,
+  }
 
-	// score
-		, s = 0
+  // score
+    , s = 0
 
-	// list of walls
-		, w = []
+  // list of walls
+    , w = []
 
-	// iterating variables, i index and l iterator
-		, i = 0
-		, l = 0
+  // iterating variables, i index and l iterator
+    , i = 0
+    , l = 0
 
-	// game loop interval
-		, g = setInterval(function() {
+  // game loop interval
+    , g = setInterval(function() {
 
-		// add and delete walls as they come and go
-		if (w.length === 0 || w[w.length - 1].x + 20 < 50) {
-			// walls have an x (meters), an h y-value where the hole starts (meters),
-			// and a q counted flag for if they've been counted as a point
-			w.push({
-				x: 80,
-				h: ~~(Math.random() * 80),
-				q: false
-			})
-		}
-		if (w[0].x + 20 < 0) {
-			w.shift();
-		}
+    // add and delete walls as they come and go
+    if (w.length === 0 || w[w.length - 1].x + 20 < 50) {
+      // walls have an x (meters), an h y-value where the hole starts (meters),
+      // and a q counted flag for if they've been counted as a point
+      w.push({
+        x: 80,
+        h: ~~(Math.random() * 80),
+        q: false
+      })
+    }
+    if (w[0].x + 20 < 0) {
+      w.shift();
+    }
 
-		// increment bird velocity by GRAVITY / FRAMES_PER_SECOND
-		b.v += .025;
-		// if the time value was set, then bird has flapped, decrement t by
-		// FLAP_TIME / FPS and set bird velocity to flap_velocity
-		if (b.t > 0) {
-			b.t -= 0.01;
-			b.v = -0.8;
-		}
+    // increment bird velocity by GRAVITY / FRAMES_PER_SECOND
+    b.v += .025;
+    // if the time value was set, then bird has flapped, decrement t by
+    // FLAP_TIME / FPS and set bird velocity to flap_velocity
+    if (b.t > 0) {
+      b.t -= 0.01;
+      b.v = -0.8;
+    }
 
-		// move the bird by it's velocity
-		b.y += b.v;
-		// move the walls by SCROLL_RATE * PIXLES_PER_METER / FRAMES_PER_SECOND
-		for (i in w) {
-			w[i].x -= 0.2;
-		}
+    // move the bird by it's velocity
+    b.y += b.v;
+    // move the walls by SCROLL_RATE * PIXLES_PER_METER / FRAMES_PER_SECOND
+    for (i in w) {
+      w[i].x -= 0.2;
+    }
 
-		// clear screen
-		c.clearRect(0, 0, 320, 480);
+    // clear screen
+    c.clearRect(0, 0, 320, 480);
 
-		// draw score
-		c.fillText(s, 160, 64);
+    // draw score
+    c.fillText(s, 160, 64);
 
-		// draw bird and walls
-		c.beginPath();
-		c.arc(140, (b.y + 5) * 4, 20, 0, 2*Math.PI);
-		for (i in w) {
-			l = w[i];
-			c.rect(l.x * 4, 0, 80, l.h * 4);
-			c.rect(l.x * 4, (l.h + 40) * 4, 80, 480);
-		}
-		c.stroke();
+    // draw bird and walls
+    c.beginPath();
+    c.arc(140, (b.y + 5) * 4, 20, 0, 2*Math.PI);
+    for (i in w) {
+      l = w[i];
+      c.rect(l.x * 4, 0, 80, l.h * 4);
+      c.rect(l.x * 4, (l.h + 40) * 4, 80, 480);
+    }
+    c.stroke();
 
-		for (i in w) {
-			l = w[i];
-			// check for collisions against each wall, if collision, then game over
-			if (((40 > l.x && 30 < l.x + 20) &&
-			     (b.y < l.h || b.y + 10 > l.h + 40)) ||
-			    d(b, l.x, l.h) < 5 ||
-			    d(b, l.x + 20, l.h) < 5 ||
-			    d(b, l.x, l.h + 40) < 5 ||
-			    d(b, l.x + 20, l.h + 40) < 5) {
-				clearInterval(g);
-				alert('Game Over');
-			}
-			// check for point values wall.x < BIRD_X + 2 * BIRD_RADIUS
-			if (!w[i].q && w[i].x < 40) {
-				s += 1;
-				w[i].q = true;
-			}
-		}
+    for (i in w) {
+      l = w[i];
+      // check for collisions against each wall, if collision, then game over
+      if (((40 > l.x && 30 < l.x + 20) &&
+           (b.y < l.h || b.y + 10 > l.h + 40)) ||
+          d(b, l.x, l.h) < 5 ||
+          d(b, l.x + 20, l.h) < 5 ||
+          d(b, l.x, l.h + 40) < 5 ||
+          d(b, l.x + 20, l.h + 40) < 5) {
+        clearInterval(g);
+        alert('Game Over');
+      }
+      // check for point values wall.x < BIRD_X + 2 * BIRD_RADIUS
+      if (!w[i].q && w[i].x < 40) {
+        s += 1;
+        w[i].q = true;
+      }
+    }
 
-	// run interval at 1000 / FRAMES_PER_SECOND
-	}, 10);
+  // run interval at 1000 / FRAMES_PER_SECOND
+  }, 10);
 
-	c.font = "bold 64px Arial";
+  c.font = "bold 64px Arial";
 
-	// create event listener for space bar to increment bird.t by FLAP_TIME
-	window.onkeydown = function(e) {
-		if (e.keyCode === 32) {
-			b.t = 0.1;
-		}
-	}
+  // create event listener for space bar to increment bird.t by FLAP_TIME
+  window.onkeydown = function(e) {
+    if (e.keyCode === 32) {
+      b.t = 0.1;
+    }
+  }
 </script>
