@@ -3,7 +3,7 @@
   /*
   UNITS
   ----
-  meters, an arbitrary non-resolution related measurment of distance
+  meters, an artrary non-resolution related measurment of distance
   pixles, the actual unit of distance
   seconds, normal seconds
   frames, an actual new frame, actually used for measuring time
@@ -38,16 +38,14 @@
 		, f = 0
 
 	// init bird with a time value (seconds)
-	  , b = {
-		t: 0
-	};
+		, t = 0;
 	// start the game
 	function r() {
-		// set the in game flag, but use 1 instead of true
+		// set the in game flag, t use 1 instead of true
 		f = 1;
 		// init the birds y and velocity values
-		b.y = 10;
-		b.v = 0;
+		k = 10;
+		v = 0;
 
 		// score
 		var s = 0
@@ -77,16 +75,16 @@
 			}
 
 			// increment bird velocity by GRAVITY / FRAMES_PER_SECOND
-			b.v += .025;
+			v += .025;
 			// if the time value was set, then bird has flapped, decrement t by
 			// FLAP_TIME / FPS and set bird velocity to FLAP_VELOCITY
-			if (b.t > 0) {
-				b.t -= 0.01;
-				b.v = -0.75
+			if (t > 0) {
+				t -= 0.01;
+				v = -0.75
 			}
 
 			// move the bird by it's velocity
-			b.y += b.v;
+			k += v;
 			// move the walls by SCROLL_RATE * PIXLES_PER_METER / FRAMES_PER_SECOND
 			for (i in w) {
 				w[i].x -= 0.2
@@ -100,7 +98,7 @@
 
 			// draw bird and walls
 			c.beginPath();
-			c.arc(140, (b.y + 5) * 4, 20, 0, 2*m.PI);
+			c.arc(140, (k + 5) * 4, 20, 0, 2*m.PI);
 			for (i in w) {
 				l = w[i];
 				c.rect(l.x * 4, 0, 80, l.h * 4);
@@ -112,12 +110,12 @@
 				l = w[i];
 				// check for collisions against each wall, if collision, then game over
 				if (((40 > l.x && 10 < l.x) &&
-						 (b.y < l.h || b.y > l.h + 30)) ||
+						 (k < l.h || k > l.h + 30)) ||
 						d(l.x, l.h) < 5 ||
 						d(l.x + 20, l.h) < 5 ||
 						d(l.x, l.h + 40) < 5 ||
 						d(l.x + 20, l.h + 40) < 5 ||
-						b.y > 110) {
+						k > 110) {
 						clearInterval(g);
 						c.t('Game Over', 0, 240);
 						f = 0
@@ -135,13 +133,13 @@
 
 	// distance function to help compute distance in meters from center of bird
   function d(x, y) {
-    // sqrt((BIRD_X + BIRD_RADIUS - x)^2 + (b.y + BIRD_RADIUS - y)^2)
-		return m.sqrt((35-x)*(35-x) + m.pow(b.y + 5 - y, 2))
+    // sqrt((BIRD_X + BIRD_RADIUS - x)^2 + (k + BIRD_RADIUS - y)^2)
+		return m.sqrt((35-x)*(35-x) + m.pow(k + 5 - y, 2))
 	}
 
   // create event listener for space bar to increment bird.t by FLAP_TIME
   window.onkeydown = function(e) {
-		e.keyCode === 32 && (b.t = 0.1) && !f && r()
+		e.keyCode === 32 && (t = 0.1) && !f && r()
 	};
 
 	// set the font for the canvas
