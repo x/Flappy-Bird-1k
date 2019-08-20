@@ -3,8 +3,8 @@
   /*
   UNITS
   ----
-  meters, an artrary non-resolution related measurment of distance
-  pixles, the actual unit of distance
+  meters, an arbitrary non-resolution related measurement of distance
+  pixels, the actual unit of distance
   seconds, normal seconds
   frames, an actual new frame, actually used for measuring time
 
@@ -20,13 +20,13 @@
   FLAP_TIME = 0.1 seconds
   WORLD_WIDTH = 80 meters
   WORLD_HEIGHT = 120 meters
-  SCREEN_WIDTH = 320 pixles
-  SCREEN_HEIGHT = 480 pixles
+  SCREEN_WIDTH = 320 pixels
+  SCREEN_HEIGHT = 480 pixels
 
   UNIT CONVERSIONS
   ---------------
   FRAMES_PER_SECOND = 100
-  PIXLES_PER_METER = 4
+  PIXELS_PER_METER = 4
   */
   // cache math, save space
   var m = Math
@@ -85,7 +85,7 @@
 
       // move the bird by it's velocity
       k += v;
-      // move the walls by SCROLL_RATE * PIXLES_PER_METER / FRAMES_PER_SECOND
+      // move the walls by SCROLL_RATE * PIXELS_PER_METER / FRAMES_PER_SECOND
       for (i in w) {
         w[i].x -= 0.2
       }
